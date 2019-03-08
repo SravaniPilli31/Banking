@@ -1,3 +1,7 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Scanner;
 
 class Bank_Login {
@@ -8,6 +12,24 @@ class Bank_Login {
 	 int TotalAccounts;
 	 int balance;
 	Scanner sc = new Scanner(System.in);
+	public void connection() {
+		try {
+			//get connection
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bank_System", "root", "Pilli@123");
+			System.out.println("Connection successfull");
+			//Create a statement
+			//execute sql query
+			Statement stmt = con.createStatement();
+			ResultSet resultSet = stmt.executeQuery("Select * from Bank_System.bank_systems");
+			while(resultSet.next()) {
+				System.out.println(resultSet.getString("Last_Name")+" "+resultSet.getString("First_Name")+" "+resultSet.getString("Previous_Transaction")+" "+resultSet.getString("Balance")+" "+resultSet.getString("DOB")+" "+resultSet.getString("Gender")+" "+resultSet.getString("Address"));
+			}
+			//
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public void create_account(String name, int age, String address, String gender) {
 		CustomerName = name;
 		CustomerAccNumber = CustomerAccNumber+1;
@@ -93,6 +115,7 @@ public class Bank_System{
 		System.out.println("C. Deposit");
 		System.out.println("D. Previous Transacation");
 		Bank_Login bl = new Bank_Login();
+		bl.connection();
 		bl.operations();
 		
 			
