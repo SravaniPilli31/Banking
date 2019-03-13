@@ -1,64 +1,46 @@
+package bankingapplication;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-class Bank_Login {
+import javax.swing.JFrame;
+
+public class Bank_Login {
 	 String CustomerName;
 	 int CustomerAccNumber=1234000000;
 	 String CustomerAddress;
 	 String CustomerGender;
 	 int TotalAccounts;
-	 int balance;
+	 static int balance;
 	Scanner sc = new Scanner(System.in);
-	public void connection() {
+	public static Connection get_connection() {
+		//get connection
 		try {
-			//get connection
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bank_System", "root", "Pilli@123");
-			System.out.println("Connection successfull");
-			//Create a statement
-			//execute sql query
-			Statement stmt = con.createStatement();
-			ResultSet resultSet = stmt.executeQuery("Select * from Bank_System.bank_systems");
-			while(resultSet.next()) {
-				System.out.println(resultSet.getString("Last_Name")+" "+resultSet.getString("First_Name")+" "+resultSet.getString("Previous_Transaction")+" "+resultSet.getString("Balance")+" "+resultSet.getString("DOB")+" "+resultSet.getString("Gender")+" "+resultSet.getString("Address"));
-			}
-			//
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bank_System?useTimezone =true&serverTimezone=PST", "root", "Pilli@123");
+	//		System.out.println("connected");
+			return con;
 		}
 		catch(Exception e) {
+			System.out.println("Not connected");
 			e.printStackTrace();
 		}
+		return null;
 	}
-	public void create_account(String name, int age, String address, String gender) {
-		CustomerName = name;
-		CustomerAccNumber = CustomerAccNumber+1;
-		CustomerAddress = address;
-		CustomerGender = gender;
-	}
-	public int checkBalance(int accountnum) {
-		return balance;
-	}
-	public void withdrawl(int amount) {
-		if(balance ==0 || balance < amount) {
-			System.out.println("Not enough balance in your account");
-		}
-		else {
-			balance = balance - amount;
-			System.out.println("Please collect cash");
-		}
-	}
-	public void deposit(int amount) {
-		balance = balance+amount;
-	}
+	//previous transaction
 	public void PreviousTransaction() {
 		
 	}
-	public void ifWantContinue() {
+	//check if want to continue
+	public void ifWantContinue() throws SQLException {
 		System.out.println("**********************************************************");
 		System.out.println("If you want to continue enter Y or enter N");
 		System.out.println("**********************************************************");
-		if(sc.next().charAt(0) == 'Y') {
+		char op = sc.next().charAt(0);
+		if( op == 'Y') {
 			operations();
 		}
 		if(sc.next().charAt(0) == 'N') {
@@ -68,31 +50,51 @@ class Bank_Login {
 			System.out.println("PLEASE ENTER A VALID OPTION");
 		}
 	}
-	public void operations() {
+	//selecting operations
+	public void operations() throws SQLException {
 		System.out.println("Please select an option: ");
 		char option = sc.next().charAt(0);
 		switch (option) {
-		case 'A': 
-			System.out.println("Your account balance is: "+ balance);
+		case 'A':
+			System.out.println("Please enter your details for creating account");
+			System.out.println("Enter Gender:");
+			String gender = sc.next();
+			System.out.println("Enter Address:");
+			String address = sc.next();
+			System.out.println("Enter Last Name:");
+			String t = sc.next();
+			System.out.println("Enter First Name:");
+			String u = sc.next();
+			
+			int accountno= (int) (Math.random()*55.234);
+			String prevTrans = null;
+			AccountCreating.create_account(accountno,t,u,prevTrans,0,gender,address);
 			ifWantContinue();
 			System.out.println("**********************************************************");
 			break;
-		case 'B':
-			System.out.println("Enter the amount you want to withdraw: ");
-			int withdrawlAmount = sc.nextInt();
-			withdrawl(withdrawlAmount);
+		case 'B': 
+			System.out.println("Please enter your account number:");
+			Balance.checkBalance(sc.nextInt());
 			ifWantContinue();
 			System.out.println("**********************************************************");
 			break;
 		case 'C':
-			System.out.println("Enter the amount you want to deposit");
-			int depositAmount = sc.nextInt();
-			balance = balance + depositAmount;
+			System.out.println("Enter the amount you want to withdraw: ");
+			int withdrawlAmount = sc.nextInt();
+			Withdrawing.withdrawl(withdrawlAmount);
 			ifWantContinue();
 			System.out.println("**********************************************************");
 			break;
 		case 'D':
-//			System.out.println();
+			System.out.println("Enter your Account number: ");
+			int acnum = sc.nextInt();
+			System.out.println("Enter the amount you want to deposit");
+			int depositAmount = sc.nextInt();
+			DepositMoney.deposit(acnum, depositAmount);
+			ifWantContinue();
+			System.out.println("**********************************************************");
+			break;
+		case 'E':
 			ifWantContinue();
 			System.out.println("**********************************************************");
 			break;
@@ -100,24 +102,20 @@ class Bank_Login {
 			System.out.println("PLEASE ENTER A VALID OPTION");
 			ifWantContinue();
 			break;
+		}
 	}
-	}
-
-}
-public class Bank_System{
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		int accnumber = (int) Math.random()+ 49*3; 
 		System.out.println("**********************************************************");
 		System.out.println("Welcome to ABC bank. Your AccountNo. is: "+ accnumber);
 		System.out.println("**********************************************************");
-		System.out.println("A. Check Balance");
-		System.out.println("B. Withdrawl");
-		System.out.println("C. Deposit");
-		System.out.println("D. Previous Transacation");
+		System.out.println("A. Create Account");
+		System.out.println("B. Check Balance");
+		System.out.println("C. Withdrawl");
+		System.out.println("D. Deposit");
+		System.out.println("E. Previous Transacation");
 		Bank_Login bl = new Bank_Login();
-		bl.connection();
+		bl.get_connection();
 		bl.operations();
-		
-			
 	}
 }
