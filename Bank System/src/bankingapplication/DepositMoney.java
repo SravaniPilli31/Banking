@@ -27,6 +27,5 @@ class DepositMoney {
 		finally {
 			
 		}
-		Bank_Login.balance = Bank_Login.balance+amount;
 	}
 }

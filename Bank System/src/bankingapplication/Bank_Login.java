@@ -79,18 +79,20 @@ public class Bank_Login {
 			System.out.println("**********************************************************");
 			break;
 		case 'C':
+			System.out.println("Enter your Account number: ");
+			int acnum = sc.nextInt();
 			System.out.println("Enter the amount you want to withdraw: ");
 			int withdrawlAmount = sc.nextInt();
-			Withdrawing.withdrawl(withdrawlAmount);
+			Withdrawing.withdrawl(acnum,withdrawlAmount);
 			ifWantContinue();
 			System.out.println("**********************************************************");
 			break;
 		case 'D':
 			System.out.println("Enter your Account number: ");
-			int acnum = sc.nextInt();
+			int acnum1 = sc.nextInt();
 			System.out.println("Enter the amount you want to deposit");
 			int depositAmount = sc.nextInt();
-			DepositMoney.deposit(acnum, depositAmount);
+			DepositMoney.deposit(acnum1, depositAmount);
 			ifWantContinue();
 			System.out.println("**********************************************************");
 			break;
