@@ -31,7 +31,8 @@ class Withdrawing {
 				balance_check.executeUpdate();
 			}
 			finally {
-				
+				//update prevoius transaction
+				Previous_Transaction.prev_transaction(accountnum, "Balance Check");
 			}
 			
 		}

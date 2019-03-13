@@ -97,6 +97,9 @@ public class Bank_Login {
 			System.out.println("**********************************************************");
 			break;
 		case 'E':
+			System.out.println("Enter your account number");
+			int accountnum = sc.nextInt();
+			Previous_Transaction.whichTransaction(accountnum);
 			ifWantContinue();
 			System.out.println("**********************************************************");
 			break;

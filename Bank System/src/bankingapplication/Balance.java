@@ -19,7 +19,8 @@ class Balance {
 			}
 		}
 		finally {
-			
+			//update prevoius transaction
+			Previous_Transaction.prev_transaction(accountnum, "Balance Check");
 		}
 	}
 }
