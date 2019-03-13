@@ -32,7 +32,7 @@ class Withdrawing {
 			}
 			finally {
 				//update prevoius transaction
-				Previous_Transaction.prev_transaction(accountnum, "Balance Check");
+				Previous_Transaction.prev_transaction(accountnum, "Withdrawl");
 			}
 			
 		}
