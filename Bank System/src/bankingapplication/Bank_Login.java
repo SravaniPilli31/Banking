@@ -20,7 +20,7 @@ public class Bank_Login {
 	public static Connection get_connection() {
 		//get connection
 		try {
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bank_System?useTimezone =true&serverTimezone=PST", "root", "Pilli@123");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bank_System?useTimezone =true&serverTimezone=PST", "root", "*****");
 	//		System.out.println("connected");
 			return con;
 		}
